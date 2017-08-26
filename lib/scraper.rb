@@ -11,16 +11,20 @@ class Scraper
   def self.scrape_index_page(index_url)
     info_arr = []
     index_html = Nokogiri::HTML(open(index_url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
-    names = index_html.search("h4[itemprop='name'] a[itemprop='url']")
+	    index_html.css("tr#row_").each do |game|
+	      info = {
+		    :name => game.css("td.collection_objectname div.last a"),
+	        :rank => game.css("td.collection_rank").text.strip,
+	        :rating => game.css("td.collection_bggrating.first").text
+        	}
+	      info_arr << info
+	      if info_arr.length == 10
+	      	break
+	      end
+	    end
 
-    #index_html.css("").each do |student|
-      #info = {
- 
-      #}
-      #info_arr << info
-    #end
 
-    return index_html
+    return info_arr
   end
 
 
