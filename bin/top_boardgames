@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+cli_lookup = Lookup.new
+cli_lookup.run
