@@ -27,7 +27,12 @@ class Lookup
 		introduction
 		data = Scraper.scrape_index_page("https://boardgamegeek.com/browse/boardgame") 
 		puts "Here is the data you requested:"
-		puts data
+		data.each do |game_info|
+			puts game_info
+		end
+		puts
+		puts 'For more information on a particular game, please enter rank number. To exit the CLI, type "exit".'
+		input = gets.chomp
 		exit
 	end
 
