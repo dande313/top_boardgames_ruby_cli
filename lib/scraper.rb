@@ -13,9 +13,10 @@ class Scraper
     index_html = Nokogiri::HTML(open(index_url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
 	    index_html.css("tr#row_").each do |game|
 	      info = {
-		    :name => game.css("td.collection_objectname div.last a"),
+		    :name => game.css("td.collection_objectname a").text.strip,
+		    :year => game.css("td.collection_objectname span").text.strip,
 	        :rank => game.css("td.collection_rank").text.strip,
-	        :rating => game.css("td.collection_bggrating.first").text
+	        :rating => game.css("td.collection_bggrating:first-of-type").text.strip
         	}
 	      info_arr << info
 	      if info_arr.length == 10
