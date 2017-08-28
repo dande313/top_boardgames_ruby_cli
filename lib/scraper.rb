@@ -41,7 +41,7 @@ class Scraper
     	game_info = {
   		 :name => @@info_arr[input][:name],
   		 :year => @@info_arr[input][:year],
-  		 :description => game_html.css("meta[@name='description']").attribute('content').to_s.strip.gsub("\n", " ").gsub("&amp;", "&").gsub("&quot;", '"')
+  		 :description => game_html.css("meta[@name='description']").attribute('content').to_s.strip.gsub("\n", " ").gsub("&amp;", "&").gsub("&quot;", '"').gsub("&quot;", '"').gsub("&ldquo;", '"').gsub("&rdquo;", '"')
   	}
   	return game_info
   	
