@@ -43,6 +43,7 @@ class Lookup
 		if input.to_i >= 1  && input.to_i <= 20
 			lookup_game(input.to_i)
 		else
+			clear_screen
 			exit
 		end
 	end

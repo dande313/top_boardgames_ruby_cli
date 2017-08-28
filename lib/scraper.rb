@@ -3,6 +3,8 @@ require 'openssl'
 require 'pry'
 require 'nokogiri'
 require 'phantomjs'
+require 'httparty'
+require 'json'
 
 class Scraper
 
@@ -19,7 +21,8 @@ class Scraper
 		    :year => game.css("td.collection_objectname span").text.strip,
 	        :rank => game.css("td.collection_rank").text.strip,
 	        :rating => game.css("td.collection_bggrating:first-of-type").text.strip,
-	        :page => "https://boardgamegeek.com" + game.css("td.collection_objectname a[@href]").attribute('href')
+	        :page => "https://boardgamegeek.com" + game.css("td.collection_objectname a[@href]").attribute('href'),
+	        :token => game.css("td.collection_objectname a[@href]").attribute('href').to_s.gsub(/[^0-9,.]/, "")
         	}
 	      @@info_arr << info
 	      if @@info_arr.length == 20
@@ -35,11 +38,10 @@ class Scraper
 
   def self.scrape_game_page(game_url, input)
   	game_html = Nokogiri::HTML(open(game_url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
-  	game_info = {
+    	game_info = {
   		 :name => @@info_arr[input][:name],
   		 :year => @@info_arr[input][:year],
-  		 :description => game_html.css("meta[@name='description']").attribute('content').to_s.strip.gsub("\n", " ").gsub("&amp;", "&").gsub("&quot;", '"'),
-  		 :html => game_html
+  		 :description => game_html.css("meta[@name='description']").attribute('content').to_s.strip.gsub("\n", " ").gsub("&amp;", "&").gsub("&quot;", '"')
   	}
   	return game_info
   	
