@@ -29,12 +29,12 @@ class Lookup
 	def run
 		clear_screen
 		introduction
-		puts
-		index_data.each do |game_info|
-			puts game_info
+		puts ""
+		Game.all.each do |game|
+			puts "#{game.rank} - #{game.name} - #{game.year} - #{game.rating.to_f.round(1).to_s}/10"
 		end
-		puts
-		puts 'For more information on a particular game, please enter rank number. Otherwise, press "enter" to exit the CLI.'
+		puts ""
+		puts 'For more information on a particular game, please enter rank number. Otherwise, type "exit" to exit the CLI.'
 		get_input
 	end
 
@@ -42,25 +42,29 @@ class Lookup
 		input = gets.strip
 		if input.to_i >= 1  && input.to_i <= 20
 			lookup_game(input.to_i)
-		else
+		elsif input.downcase == "exit"	
 			clear_screen
 			exit
+		else
+			puts "Invalid Entry"
+			get_input
 		end
 	end
 
 	def lookup_game(input)
-		game_url = Scraper.info_arr[input - 1][:page]
-		game_data = Scraper.scrape_game_page(game_url, input - 1)
 		clear_screen
-		puts game_data[:name]
-		puts game_data[:year]
+		index = input - 1
+		game = Game.all[index]
+		puts game.name
+		puts game.year
 		puts
-		puts game_data[:description]
+		puts game.description
+		puts
+		puts "For more information, visit #{game.page}"
+		puts 
 		puts
 		puts "Press Enter to return"
 		gets
 		run
 	end
-
-
 end
